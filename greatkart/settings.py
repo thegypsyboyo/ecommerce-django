@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
+"""
+We want to implement python security measures
+First we install a package called decouple: pip install python-decouple
 
+Next importation
+"""
+from pathlib import Path
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -20,12 +26,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'c(n^p=asq(2su%4a^a8j=y9e)=pu)fy_(4b+!h8gcab^_t(nqk'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['greatekart-course-env.eba-pfzfae7b.us-west-2.elasticbeanstalk.com']
 
 
 # Application definition
@@ -41,6 +47,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +143,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT =  BASE_DIR / 'media'
 
+# Messages pop up
+
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR:'danger',
@@ -143,8 +152,8 @@ MESSAGE_TAGS = {
 
 # SMTP Configuration
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'lewisonyango1@gmail.com'
-EMAIL_HOST_PASSWORD = 'pibz xlmo xovy bvzt'
-EMAIL_USE_TLS = True 
+EMAIL_HOST = config('EMAIL_HOST', default="localhost")
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
